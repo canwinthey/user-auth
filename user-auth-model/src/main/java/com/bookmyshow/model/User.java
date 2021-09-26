@@ -11,9 +11,11 @@ import javax.persistence.Id;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity(name = "USER")
 public class User {
 
@@ -33,6 +35,9 @@ public class User {
 
 	@Column(name = "phone_no")
     private String phoneNo;
+	
+	@Column(name = "role")
+    private String role;
 	
 	@Column(name = "is_active")
     private String isActive;
