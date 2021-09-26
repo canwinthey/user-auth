@@ -1,0 +1,48 @@
+version: '3.7'
+services:
+  todo-web-application:
+    image: prassyk/user-auth-service:0.0.1-SNAPSHOT
+    container_name: user-auth-service
+    ports:
+      - "8081:8081"
+    restart: always
+    depends_on: # Start the depends_on first
+      - mysql 
+    environment:
+      RDS_HOSTNAME: mysql
+      RDS_PORT: 3306
+      RDS_DB_NAME: user
+      RDS_USERNAME: user
+      RDS_PASSWORD: dummyuser
+    networks:
+      - user-network
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: dummypassword 
+      MYSQL_USER: user
+      MYSQL_PASSWORD: dummyuser
+      MYSQL_DATABASE: user
+    volumes:
+      - mysql-database-data-volume:/var/lib/mysql
+    networks:
+      - user-network  
+  
+# Volumes
+#volumes:
+#  mysql-database-data-volume:
+volumes:
+  mysql-database-data-volume:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: 'C:/voldata'  
+
+networks:
+  user-network:
